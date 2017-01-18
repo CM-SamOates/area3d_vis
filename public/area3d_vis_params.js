@@ -49,12 +49,18 @@ uiModules.get('kibana/area3d_vis')
         $scope.$watchMulti([
           'vis.params.graphSelect',
           'vis.params.showPerspective',
+          'vis.params.topDownCamera',
           'vis.params.showGrid',
           'vis.params.showShadow',
           'vis.params.keepAspectRatio',
+          'vis.params.zMin',
+          'vis.params.zMax',
+          'vis.params.defaultZoom',
           'vis.params.xLabel',
           'vis.params.yLabel',
-          'vis.params.zLabel'
+          'vis.params.zLabel',
+          'vis.params.legend',
+          'vis.params.tooltip'
         ], function () {
           if (!$scope.vis) return;
         });

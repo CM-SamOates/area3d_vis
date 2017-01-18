@@ -13,6 +13,7 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
   let width;
   let height;
   let data = new vis3D.DataSet();
+
   let margin = {
     top: 10,
     right: 10,
@@ -29,9 +30,9 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
       width = $(rootElement).width() - margin.left - margin.right;
       height = $(rootElement).height() - margin.top - margin.bottom;
 
-      let x = 0;
-      let y = 0;
-      let z = 0;
+      let x = 0.0;
+      let y = 0.0;
+      let z = 0.0;
       let cols = 0;
       let rows = 0;
 
@@ -40,26 +41,35 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
         if (xElementRoot !== null) {
           _.map(xElementRoot.buckets, function (xElement) {
             if (xElement !== null) {
-              x = parseInt(xElement.key);
+              x = parseFloat(xElement.key);
               cols++;
               _.map(xElement[3].buckets, function (yElementBucket) {
 
-                y = parseInt(yElementBucket.key);
+                y = parseFloat(yElementBucket.key);
                 rows++;
 
                 if (yElementBucket.hasOwnProperty('1')) {
-                  z = parseInt(yElementBucket[1].value);
+                  z = parseFloat(yElementBucket[1].value);
                 } else {
                   z = yElementBucket.doc_count;
+                }
+
+                if (vis.params.zMin !== null && z < vis.params.zMin) {
+                    z = vis.params.zMin;
+                }
+
+                if (vis.params.zMax !== null && z > vis.params.zMax) {
+                    z = vis.params.zMax;
                 }
 
                 data.add({
                   id: counter++,
                   x: x,
-                  y: parseInt(yElementBucket.key),
+                  y: y,
                   z: z,
                   style: z
                 });
+
               });
             }
           });
@@ -84,11 +94,32 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
         xLabel: vis.params.xLabel !== null ? vis.params.xLabel : 'X',
         yLabel: vis.params.yLabel !== null ? vis.params.yLabel : 'Y',
         zLabel: vis.params.zLabel !== null ? vis.params.zLabel : 'Z',
-        legendLabel: 'This is a legend'
+        legendLabel: vis.params.legend !== null ? vis.params.legend : 'I am legend',
+        tooltip: vis.params.tooltip
       };
 
+      if (vis.params.zMin !== null) {
+        options.valueMin = vis.params.zMin;
+      }
+
+      if (vis.params.zMax !== null) {
+        options.valueMax = vis.params.zMax;
+      }
+
       // Instantiate our graph object.
-      graph = new vis3D.Graph3d(rootElement[0], data, options);
+      graph = new vis3D.Graph3d(rootElement[0]); // , data, options
+
+      graph.setOptions(options);
+      graph.setData(data);
+
+      if (vis.params.topDownCamera) {
+        var pos = {
+          horizontal: 3.14,
+          vertical: 1.57,
+          distance: vis.params.defaultZoom !== null ? vis.params.defaultZoom : 2.0
+        };
+        graph.setCameraPosition(pos);
+      }
 
     }
   });
@@ -103,15 +134,10 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
     let height = element.height();
     let width = element.width();
 
-    if (width < 200 || height < 200) {
-      // Too small a container
-
-    } else {
+    if (width >= 200 && height >= 200) {
       if (data && graph) {
-
         width = width - margin.left - margin.right;
         height = height - margin.top - margin.bottom;
-
         graph.setSize(width + 'px', height + 'px');
         graph.redraw();
       }

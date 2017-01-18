@@ -24,12 +24,18 @@ function Area3DVisProvider(Private) {
       defaults: {
         graphSelect: 'surface',
         showPerspective: true,
+        topDownCamera: true,
         showGrid: true,
         showShadow: false,
         keepAspectRatio: true,
+        zMin: null,
+        zMax: null,
+        defaultZoom: 2.0,
         xLabel: 'X',
         yLabel: 'Y',
-        zLabel: 'Z'
+        zLabel: 'Z',
+        legend: 'I am legend',
+        tooltip: true
       },
       editor: require('plugins/area3d_vis/area3d_vis_params.html')
     },

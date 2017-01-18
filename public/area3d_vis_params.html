@@ -6,6 +6,12 @@
   <label>Show Perspective</label>
   <input type="checkbox" ng-model="vis.params.showPerspective" />
   <br />
+  <label>Topdown Camera</label>
+  <input type="checkbox" ng-model="vis.params.topDownCamera" />
+  <br />
+  <label>Show Tooltip</label>
+  <input type="checkbox" ng-model="vis.params.tooltip" />
+  <br />
   <label>Show Grid</label>
   <input type="checkbox" ng-model="vis.params.showGrid" />
   <br />
@@ -17,6 +23,18 @@
   <br />
   <br />
 
+  <label>Default Camera Zoom</label>
+  <input type="text" ng-model="vis.params.defaultZoom" />
+  <br />
+  <label>Minimum Z Value</label>
+  <input type="text" ng-model="vis.params.zMin" />
+  <br />
+  <label>Maximum Z Value</label>
+  <input type="text" ng-model="vis.params.zMax" />
+  <br />
+  
+  <br />
+  <br />
   <label>X Axis Label</label>
   <input type="text" ng-model="vis.params.xLabel" />
   <br />
@@ -25,6 +43,9 @@
   <br />
   <label>Z Axis Label</label>
   <input type="text" ng-model="vis.params.zLabel" />
+  <br />
+  <label>Legend Label</label>
+  <input type="text" ng-model="vis.params.legend" />
   <br />
 
 </div>
