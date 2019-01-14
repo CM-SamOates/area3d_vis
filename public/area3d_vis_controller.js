@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import uiModules from 'ui/modules';
+import { uiModules } from 'ui/modules';
 import $ from 'jquery';
 const module = uiModules.get('kibana/area3d_vis', ['kibana']);
 
@@ -36,6 +36,7 @@ module.controller('KbnArea3DVisController', function ($scope, $element, Private)
       let cols = 0;
       let rows = 0;
 
+      data = new vis3D.DataSet();
       // Go from Elasticsearch resp object to vis.js Dataset
       _.map(resp.aggregations, function (xElementRoot) {
         if (xElementRoot !== null) {

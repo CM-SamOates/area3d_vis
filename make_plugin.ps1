@@ -1,4 +1,6 @@
 
+$scriptPath = $PSScriptRoot
+
 # Create the build output folder.
 New-Item -ItemType Directory -Force -Path 'build'
 
@@ -22,7 +24,7 @@ Copy-Item 'public/*' '_temp/kibana/area3d_vis/public'
 
 # Compress the temp folder into the plugin
 Add-Type -A System.IO.Compression.FileSystem
-[IO.Compression.ZipFile]::CreateFromDirectory('_temp', 'build/area3d_vis.zip')
+[IO.Compression.ZipFile]::CreateFromDirectory($scriptPath + '/_temp', $scriptPath + '/build/area3d_vis.zip')
 
 # Delete the temp folder
 Remove-Item '_temp' -Recurse -Force
